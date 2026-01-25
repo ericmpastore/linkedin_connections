@@ -25,22 +25,31 @@ def render_plot(csv_file='Connections.csv'):
     connections_count['connection_count']=1
 
     # group sum by Connected On date, EPastore 01/24/26
-    final_frame = connections_count.groupby(pd.Grouper(key='Connected On', freq='MS'))['connection_count'].sum()
+    final_frame = connections_count.groupby(pd.Grouper(key='Connected On', freq='MS'))['connection_count'].sum().reset_index()
 
-    # plot line chart, EPastore 01/24/26
-    final_frame.plot(kind='line', color='gray', linewidth=2,marker='o')
-    for x, y in final_frame.items():
-        plt.annotate(str(int(y)), xy=(x, y), xytext=(0, 5), 
-                 textcoords='offset points', ha='center', fontsize=9)
-    plt.gca().spines['top'].set_visible(False)
-    plt.gca().spines['right'].set_visible(False)
-    plt.gca().spines['left'].set_visible(False)
-    plt.gca().spines['bottom'].set_visible(False)
-    plt.tick_params(left=False,bottom=False)
-    plt.xlabel(None)
-    plt.ylabel(None)
+    # plot line chart using plot method, EPastore 01/25/26
+    x = final_frame['Connected On']
+    y = final_frame['connection_count']
+
+    plt.plot(x,y)
+    plt.xlabel('Connected Date')
     plt.title('2025 LinkedIn Connections Per Month')
     plt.show()
+
+    # plot line chart, EPastore 01/24/26
+    # final_frame.plot(kind='line', color='gray', linewidth=2,marker='o')
+    # for x, y in final_frame.items():
+    #     plt.annotate(str(int(y)), xy=(x, y), xytext=(0, 5), 
+    #              textcoords='offset points', ha='center', fontsize=9)
+    # plt.gca().spines['top'].set_visible(False)
+    # plt.gca().spines['right'].set_visible(False)
+    # plt.gca().spines['left'].set_visible(False)
+    # plt.gca().spines['bottom'].set_visible(False)
+    # plt.tick_params(left=False,bottom=False)
+    # plt.xlabel(None)
+    # plt.ylabel(None)
+    # plt.title('2025 LinkedIn Connections Per Month')
+    # plt.show()
 
 def main():
     render_plot()
