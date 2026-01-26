@@ -53,11 +53,23 @@ def plot_connections_over_time(csv_file='Connections.csv', days=365):
         running_totals.append(len(unique_lastnames_so_far))
 
     # Create the plot
-    fig, ax = plt.subplots(figsize=(14, 7))
+    fig, ax = plt.subplots(figsize=(14, 7), num='LinkedIn Connections')
 
-    # Plot running total of unique last names
+    # Plot running total of unique last names (gray line)
     ax.plot(date_range, running_totals,
-            linewidth=2, color='#0077B5', label='Unique Last Names')
+            linewidth=2, color='gray', label='Unique Last Names')
+
+    # Find points where value changes and add labels
+    prev_value = running_totals[0] if running_totals else 0
+    for i, (date, value) in enumerate(zip(date_range, running_totals)):
+        if value != prev_value:
+            # Add a marker at change points
+            ax.scatter(date, value, color='gray', s=50, zorder=5)
+            # Add label with the count
+            ax.annotate(f'{value}', (date, value),
+                        textcoords='offset points', xytext=(0, 10),
+                        ha='center', fontsize=8, color='dimgray')
+        prev_value = value
 
     # Formatting
     ax.set_xlabel('Date', fontsize=12, fontweight='bold')
@@ -70,13 +82,13 @@ def plot_connections_over_time(csv_file='Connections.csv', days=365):
     fig.autofmt_xdate()
 
     # Add statistics text box
-    # total_unique_lastnames = running_totals[-1]
-    # initial_unique_lastnames = len(unique_lastnames_before)
-    # new_unique_lastnames = total_unique_lastnames - initial_unique_lastnames
-    # stats_text = f'Total Unique Last Names: {total_unique_lastnames}\nNew in last {days} days: {new_unique_lastnames}\nStarting count: {initial_unique_lastnames}'
-    # ax.text(0.02, 0.98, stats_text, transform=ax.transAxes,
-    #         fontsize=10, verticalalignment='top',
-    #         bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    total_unique_lastnames = running_totals[-1]
+    initial_unique_lastnames = len(unique_lastnames_before)
+    new_unique_lastnames = total_unique_lastnames - initial_unique_lastnames
+    stats_text = f'Total Unique Last Names: {total_unique_lastnames}\nNew in last {days} days: {new_unique_lastnames}\nStarting count: {initial_unique_lastnames}'
+    ax.text(0.02, 0.98, stats_text, transform=ax.transAxes,
+            fontsize=10, verticalalignment='top',
+            bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
     plt.tight_layout()
     return fig, ax
