@@ -31,6 +31,7 @@ def render_plot(csv_file='Connections.csv'):
     x = final_frame['Connected On']
     y = final_frame['connection_count']
 
+    plt.figure(num='LinkedIn Connections')
     plt.plot(x,y, linewidth=2, color='gray',marker='o')
     for i in range(len(x)):
         plt.annotate(str(int(y.iloc[i])), xy=(x.iloc[i], y.iloc[i]), 
@@ -47,7 +48,8 @@ def render_plot(csv_file='Connections.csv'):
     # Remove x axis tick marks (keeps labels)
     plt.tick_params(axis='x', length=0)
     plt.title('2025 LinkedIn Connections Per Month')
-    plt.tight_layout(pad=0.0)
+    plt.margins(x=0.05,y=.15)
+    plt.tight_layout(pad=1.0)
     plt.show()
 
 def main():
