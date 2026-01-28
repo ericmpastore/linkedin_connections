@@ -31,14 +31,23 @@ def render_plot(csv_file='Connections.csv'):
     x = final_frame['Connected On']
     y = final_frame['connection_count']
 
-    plt.plot(x,y, linewidth=2, color='gray')
+    plt.plot(x,y, linewidth=2, color='gray',marker='o')
     for i in range(len(x)):
         plt.annotate(str(int(y.iloc[i])), xy=(x.iloc[i], y.iloc[i]), 
                  xytext=(0, 5), textcoords='offset points', 
                  ha='center', fontsize=9)
-    plt.xlabel('Connected Date')
+    plt.gca().spines['top'].set_visible(False)
+    plt.gca().spines['right'].set_visible(False)
+    plt.gca().spines['left'].set_visible(False)
+    plt.gca().spines['bottom'].set_visible(False)
+
+    # Remove y axis scale completely
+    plt.yticks([])
+
+    # Remove x axis tick marks (keeps labels)
+    plt.tick_params(axis='x', length=0)
     plt.title('2025 LinkedIn Connections Per Month')
-    plt.tight_layout()
+    plt.tight_layout(pad=0.0)
     plt.show()
 
 def main():
